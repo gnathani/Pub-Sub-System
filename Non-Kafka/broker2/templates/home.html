@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome to NBA Pub Sub! {{ username }}!</p>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.team }}
+        <input type="submit", value="Subscribe">
+    </form>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+        <span>{{ message }}</span>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<div class="container">
+    <div class="one">
+      <p>This is our Match Score Section</p>
+        {% for scores in score_list %}
+            <br>{{ scores.title }}
+            <br>{{ scores.score }}
+        {% endfor %}
+    </div>
+    <div class="two">
+      <p>This is our News Section please select a topic that you would like to see news for</p>
+        {% for news in news_list %}
+            <br><a href="{{ news.link }}"><i class="fas fa-home"></i>{{ news.title}}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

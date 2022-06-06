@@ -1,0 +1,58 @@
+version: '3'
+services:
+  app:
+    hostname: broker_server1
+    build: .
+    command: python -u /app/app.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    links:
+      - db
+  broker2:
+    hostname: broker_server2
+    build: broker2/
+    command: python -u broker2.py
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./broker2:/broker2
+    links:
+      - db
+  broker3:
+    hostname: broker_server3
+    build: broker3/
+    command: python -u broker3.py
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./broker3:/broker3
+    links:
+      - db
+  pub1:
+    build: pub1/
+    command: python pub1.py
+    depends_on:
+      - app
+  pub2:
+    build: pub2/
+    command: python pub2.py
+    depends_on:
+      - app 
+  pub3:
+    build: pub3/
+    command: python pub3.py
+    depends_on:
+      - app 
+  db:
+    image: mongo 
+    hostname: test_mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=teams_db
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
+    ports:
+      - 27017:27017

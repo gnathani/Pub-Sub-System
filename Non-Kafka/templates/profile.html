@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Subscription Page</h2>
+<br>
+    <p> Topics you are subscribed for:
+      {% for each in dropdown_list %}
+         <br>{{each}}
+      {% endfor %}
+    </p>
+    <p>If you want to discontinue our service</p>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.team }}
+        <input type="submit", value="UnSubscribe">
+    </form>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+        <span>{{ message }}</span>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</div>
+{% endblock %}
